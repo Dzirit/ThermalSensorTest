@@ -26,8 +26,8 @@ namespace ThermalSensorTest
                 bool writeData = bool.Parse(config["WriteData"]);
                 Parity defaultParity = (Parity)int.Parse(config["Parity"]);
                 int defaultDataBits= int.Parse(config["DataBits"]);
-                int defaultStopBits = int.Parse(config["StopBits"]);
-                int defaultHandshake= int.Parse(config["Handshake"]);
+                StopBits defaultStopBits = (StopBits)int.Parse(config["StopBits"]);
+                Handshake defaultHandshake= (Handshake)int.Parse(config["Handshake"]);
                 var listener = new MySerialReader(SetPortName(defaultPortName), 
                 SetPortBaudRate(defaultPortBaudRate),
                 writeData,

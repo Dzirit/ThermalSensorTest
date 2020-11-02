@@ -3,8 +3,8 @@
   "PortBaudRate": 19200,
   "WriteData": false,
   "Parity": 0,
-  "DataBits": 0,
-  "StopBits": 0,
+  "DataBits": 8,
+  "StopBits": 1,
   "Handshake": 0
 
   /*
@@ -31,6 +31,54 @@
         //     Leaves the parity bit set to 0.
         Space = 4
     }
-
+   public enum StopBits
+    {
+        //
+        // Сводка:
+        //     No stop bits are used. This value is not supported by the System.IO.Ports.SerialPort.StopBits
+        //     property.
+        None = 0,
+        //
+        // Сводка:
+        //     One stop bit is used.
+        One = 1,
+        //
+        // Сводка:
+        //     Two stop bits are used.
+        Two = 2,
+        //
+        // Сводка:
+        //     1.5 stop bits are used.
+        OnePointFive = 3
+    }
+  // Сводка:
+    //     Specifies the control protocol used in establishing a serial port communication
+    //     for a System.IO.Ports.SerialPort object.
+    public enum Handshake
+    {
+        //
+        // Сводка:
+        //     No control is used for the handshake.
+        None = 0,
+        //
+        // Сводка:
+        //     The XON/XOFF software control protocol is used. The XOFF control is sent to stop
+        //     the transmission of data. The XON control is sent to resume the transmission.
+        //     These software controls are used instead of Request to Send (RTS) and Clear to
+        //     Send (CTS) hardware controls.
+        XOnXOff = 1,
+        //
+        // Сводка:
+        //     Request-to-Send (RTS) hardware flow control is used. RTS signals that data is
+        //     available for transmission. If the input buffer becomes full, the RTS line will
+        //     be set to false. The RTS line will be set to true when more room becomes available
+        //     in the input buffer.
+        RequestToSend = 2,
+        //
+        // Сводка:
+        //     Both the Request-to-Send (RTS) hardware control and the XON/XOFF software controls
+        //     are used.
+        RequestToSendXOnXOff = 3
+    }
   */
 }

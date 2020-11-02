@@ -14,17 +14,25 @@ namespace ThermalSensorTest
         private SerialPort serialPort;
         private Queue<byte> recievedData = new Queue<byte>();
 
-        public MySerialReader(string portName, int baudRate, bool writeData, Parity parity, int DataBits, int stopBits, int handshake)
+        public MySerialReader(string portName, int baudRate, bool writeData, Parity parity, int dataBits, StopBits stopBits, Handshake handshake)
         {
             serialPort = new SerialPort();
             serialPort.PortName = portName;
             serialPort.BaudRate = baudRate;
-            serialPort.Parity = Parity.None;
+            serialPort.Parity = parity;
             serialPort.ReadTimeout = Timeout.Infinite;
-            serialPort.DataBits = 8;
-            serialPort.StopBits = StopBits.Two;
-            serialPort.Handshake = Handshake.RequestToSendXOnXOff;
+            serialPort.DataBits = dataBits;
+            serialPort.StopBits = stopBits;
+            serialPort.Handshake = handshake;
             serialPort.Open();
+            Console.WriteLine($"Port {serialPort.PortName} opened");
+            Console.WriteLine($"Port settings: \r\n" +
+                $"BaudRate:{serialPort.BaudRate} \r\n" +
+                $"Parity:{serialPort.Parity} \r\n" +
+                $"DataBits: {serialPort.DataBits} \r\n" +
+                $"StopBits: {serialPort.StopBits} \r\n" +
+                $"Handshake: {serialPort.Handshake} \r\n" +
+                $"Waiting data...");
             serialPort.DataReceived += serialPort_DataReceived;
             if (writeData)
             {
