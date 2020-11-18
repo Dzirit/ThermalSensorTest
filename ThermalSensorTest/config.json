@@ -1,11 +1,12 @@
 {
   "PortName": "/dev/ttyS2",
   "PortBaudRate": 19200,
-  "WriteData": false,
   "Parity": 0,
   "DataBits": 8,
   "StopBits": 1,
-  "Handshake": 0
+  "Handshake": 0,
+  "WriteData": false,
+  "WhichReaderUse": 2
 
   /*
     public enum Parity

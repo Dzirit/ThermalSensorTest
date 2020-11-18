@@ -16,30 +16,40 @@ namespace ThermalSensorTest
 
         public MySerialReader(string portName, int baudRate, bool writeData, Parity parity, int dataBits, StopBits stopBits, Handshake handshake)
         {
-            serialPort = new SerialPort();
-            serialPort.PortName = portName;
-            serialPort.BaudRate = baudRate;
-            serialPort.Parity = parity;
-            serialPort.ReadTimeout = Timeout.Infinite;
-            serialPort.DataBits = dataBits;
-            serialPort.StopBits = stopBits;
-            serialPort.Handshake = handshake;
-            serialPort.Open();
-            Console.WriteLine($"Port {serialPort.PortName} opened");
-            Console.WriteLine($"Port settings: \r\n" +
-                $"BaudRate:{serialPort.BaudRate} \r\n" +
-                $"Parity:{serialPort.Parity} \r\n" +
-                $"DataBits: {serialPort.DataBits} \r\n" +
-                $"StopBits: {serialPort.StopBits} \r\n" +
-                $"Handshake: {serialPort.Handshake} \r\n" +
-                $"Waiting data...");
-            serialPort.DataReceived += serialPort_DataReceived;
-            if (writeData)
+            try
             {
-                serialPort.WriteLine("Hello!");
+                serialPort = new SerialPort();
+                serialPort.PortName = SetPortName(portName);
+                serialPort.BaudRate = SetPortBaudRate(baudRate);
+                serialPort.Parity = parity;
+                serialPort.ReadTimeout = Timeout.Infinite;
+                serialPort.DataBits = dataBits;
+                serialPort.StopBits = stopBits;
+                serialPort.Handshake = handshake;
+                serialPort.Open();
+                Console.WriteLine($"Port {serialPort.PortName} opened");
+                Console.WriteLine($"Port settings: \r\n" +
+                    $"BaudRate:{serialPort.BaudRate} \r\n" +
+                    $"Parity:{serialPort.Parity} \r\n" +
+                    $"DataBits: {serialPort.DataBits} \r\n" +
+                    $"StopBits: {serialPort.StopBits} \r\n" +
+                    $"Handshake: {serialPort.Handshake} \r\n" +
+                    $"Waiting data...");
+                serialPort.DataReceived += serialPort_DataReceived;
+                if (writeData)
+                {
+                    serialPort.WriteLine("Hello!");
+                }
+
+                Console.ReadLine();
             }
-            
-            Console.ReadLine();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                serialPort.Close();
+                serialPort.Dispose();
+            }
+
 
             //var dis = Observable
             //    .FromEventPattern<SerialDataReceivedEventHandler, SerialDataReceivedEventHandler>(x => serialPort.DataReceived += x, x => serialPort.DataReceived -= x)
@@ -87,6 +97,41 @@ namespace ThermalSensorTest
             {
                 serialPort.Dispose();
             }
+        }
+        // Display Port values and prompt user to enter a port.
+        public static string SetPortName(string defaultPortName)
+        {
+            string portName;
+
+            Console.WriteLine("Available Ports:");
+            foreach (string s in SerialPort.GetPortNames())
+            {
+                Console.WriteLine("   {0}", s);
+            }
+
+            Console.Write("Enter COM port value (Default: {0}): ", defaultPortName);
+            portName = Console.ReadLine();
+
+            if (portName == "" || !(portName.ToLower()).StartsWith("com"))
+            {
+                portName = defaultPortName;
+            }
+            return portName;
+        }
+        // Display BaudRate values and prompt user to enter a value.
+        public static int SetPortBaudRate(int defaultPortBaudRate)
+        {
+            string baudRate;
+
+            Console.Write("Baud Rate(default:{0}): ", defaultPortBaudRate);
+            baudRate = Console.ReadLine();
+
+            if (baudRate == "")
+            {
+                baudRate = defaultPortBaudRate.ToString();
+            }
+
+            return int.Parse(baudRate);
         }
     }
 }
