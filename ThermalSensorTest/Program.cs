@@ -2,17 +2,20 @@
 using System.IO.Ports;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
+using ThermalSensorTest.Modbus;
 
 namespace ThermalSensorTest
 {
-    class Program
+    static class Program
     {
+        public static MySerialPort MySerialPort { get; set; }
+        public static IConfigurationRoot config;
         [STAThread]
         public static void Main()
         {         
             try
             {
-                var config = new ConfigurationBuilder()
+                config = new ConfigurationBuilder()
                  .AddJsonFile("config.json", optional: true, reloadOnChange: true)
                  .Build();
                 var defaultPortName = config["PortName"];
@@ -22,10 +25,7 @@ namespace ThermalSensorTest
                 int defaultDataBits= int.Parse(config["DataBits"]);
                 StopBits defaultStopBits = (StopBits)int.Parse(config["StopBits"]);
                 Handshake defaultHandshake= (Handshake)int.Parse(config["Handshake"]);
-                int chooser = int.Parse(config["WhichReaderUse"]);
-                if (chooser == 1)
-                {
-                    var listener = new MySerialReader(defaultPortName,
+                MySerialPort = new MySerialPort(defaultPortName,
                                                         defaultPortBaudRate,
                                                         writeData,
                                                         defaultParity,
@@ -33,20 +33,11 @@ namespace ThermalSensorTest
                                                         defaultStopBits,
                                                         defaultHandshake
                                                         );
-                }
-                else
+                if (MySerialPort.serialPort.IsOpen)
                 {
-                    var listener2 = new MySerialReader2(defaultPortName,
-                                                        defaultPortBaudRate,
-                                                        writeData,
-                                                        defaultParity,
-                                                        defaultDataBits,
-                                                        defaultStopBits,
-                                                        defaultHandshake
-                                                        );
+                    var request = new ModbusRequestCreator();
                 }
-
-
+                
             }
             catch (Exception e)
             {

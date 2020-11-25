@@ -1,12 +1,11 @@
 {
-  "PortName": "COM1",
+  "PortName": "COM5",
   "PortBaudRate": 9600,
   "Parity": 0,
   "DataBits": 8,
   "StopBits": 1,
   "Handshake": 0,
-  "WriteData": true,
-  "WhichReaderUse": 2
+  "WriteData": false
 
   /*
     public enum Parity

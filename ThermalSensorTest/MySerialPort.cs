@@ -9,10 +9,10 @@ using System.Threading;
 
 namespace ThermalSensorTest
 {
-    public class MySerialReader 
+    public class MySerialPort 
     {
-        private SerialPort serialPort;
-        public MySerialReader(string portName, int baudRate, bool writeData, Parity parity, int dataBits, StopBits stopBits, Handshake handshake)
+        public SerialPort serialPort { get; set; }
+        public MySerialPort(string portName, int baudRate, bool writeData, Parity parity, int dataBits, StopBits stopBits, Handshake handshake)
         {
             try
             {
@@ -39,8 +39,8 @@ namespace ThermalSensorTest
                     var writeThread = new Thread(Write);
                     writeThread.Start();
                 }
-
-                Console.ReadLine();
+                //ModbusRequest();
+                //Console.ReadKey();
             }
             catch (Exception e)
             {
@@ -49,6 +49,7 @@ namespace ThermalSensorTest
                 serialPort?.Dispose();
             }
         }
+       
         void Write()
         {
             while (true)
@@ -65,11 +66,19 @@ namespace ThermalSensorTest
                 }
             }
         }
+
         void SerialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
             byte[] data = new byte[serialPort.BytesToRead];
             serialPort.Read(data, 0, data.Length);
-            var str =Encoding.Default.GetString(data);
+            StringBuilder sb = new StringBuilder();
+            foreach (var d in data)
+            {
+                sb.Append($"0x{d.ToString("X2")} ");
+            }
+            var str = sb.ToString();
+            //var str = Encoding.UTF8.GetString(data);
+            //var str = serialPort.ReadLine();
             Console.WriteLine(str);
         }   
     }
