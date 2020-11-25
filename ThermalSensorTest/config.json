@@ -1,11 +1,11 @@
 {
-  "PortName": "/dev/ttyS2",
-  "PortBaudRate": 19200,
+  "PortName": "COM1",
+  "PortBaudRate": 9600,
   "Parity": 0,
   "DataBits": 8,
   "StopBits": 1,
   "Handshake": 0,
-  "WriteData": false,
+  "WriteData": true,
   "WhichReaderUse": 2
 
   /*

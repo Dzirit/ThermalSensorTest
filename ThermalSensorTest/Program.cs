@@ -7,7 +7,6 @@ namespace ThermalSensorTest
 {
     class Program
     {
-        
         [STAThread]
         public static void Main()
         {         
@@ -24,8 +23,7 @@ namespace ThermalSensorTest
                 StopBits defaultStopBits = (StopBits)int.Parse(config["StopBits"]);
                 Handshake defaultHandshake= (Handshake)int.Parse(config["Handshake"]);
                 int chooser = int.Parse(config["WhichReaderUse"]);
-
-                if (chooser==1)
+                if (chooser == 1)
                 {
                     var listener = new MySerialReader(defaultPortName,
                                                         defaultPortBaudRate,
@@ -55,5 +53,6 @@ namespace ThermalSensorTest
                 Console.WriteLine(e);
             }
         }
+        
     }
 }
